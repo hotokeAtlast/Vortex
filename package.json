@@ -1,13 +1,17 @@
 {
-  "name": "vortex-frontend",
+  "name": "vortex",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:server\"",
+    "dev:frontend": "vite",
+    "dev:server": "cd server && npm run dev",
     "build": "vite build",
+    "build:server": "cd server && echo \"No build needed for backend\"",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup": "npm install && cd server && npm install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
@@ -27,6 +31,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^8.2.2",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
