@@ -118,8 +118,7 @@ export default function Cart() {
                   <a href={`./product/${item.id}`}>{item.name}</a>
                 </h3>
                 <p className="text-amber-600 dark:text-amber-500 font-bold mt-0.5">
-
-                  {item.price.toLocaleString('en-IN')}
+                  ₹{typeof item.price === 'number' ? item.price.toLocaleString('en-IN') : parsePrice(item.price).toLocaleString('en-IN')}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
                   {item.tag || "Artifact"}
@@ -169,13 +168,13 @@ export default function Cart() {
             <div className="flex justify-between text-gray-600 dark:text-gray-400">
               <span>Subtotal</span>
               <span className="font-medium text-gray-900 dark:text-white">
-                {subtotal.toLocaleString()}
+                ₹{Math.round(subtotal).toLocaleString('en-IN')}
               </span>
             </div>
             <div className="flex justify-between text-gray-600 dark:text-gray-400">
               <span>Dimensional Transit (Shipping)</span>
               <span className="font-medium text-gray-900 dark:text-white">
-                {shipping}
+                ₹{shipping.toLocaleString('en-IN')}
               </span>
             </div>
           </div>
@@ -185,8 +184,8 @@ export default function Cart() {
               <span className="text-lg font-bold text-gray-900 dark:text-white">
                 Total
               </span>
-              <span className="text-2xl font-extrabold text-amber-500">
-                {orderTotal.toLocaleString()}
+              <span className="text-2xl font-extrabold text-amber-600 dark:text-amber-500">
+                ₹{Math.round(orderTotal).toLocaleString('en-IN')}
               </span>
             </div>
           </div>

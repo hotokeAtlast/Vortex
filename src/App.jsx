@@ -11,6 +11,7 @@ import Checkout from './pages/Checkout';
 import OrderHistory from './pages/OrderHistory';
 import Profile from './pages/Profile';
 import Admin from './pages/Admin';
+import SellerPortal from './pages/SellerPortal';
 import Toast from './components/Toast';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/seller" element={<SellerPortal />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

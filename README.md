@@ -50,21 +50,21 @@ vortex/
 
 ## 🎯 Features
 
-### Current
-- ✅ User authentication (Firebase)
-- ✅ Product browsing and search
-- ✅ Shopping cart management
-- ✅ Order history and profile
-- ✅ Admin product management
-- ✅ Dark/light theme toggle
-- ✅ Responsive design with TailwindCSS
-
-### In Development
-- 🔄 Multi-seller support
-- 🔄 Seller portal and dashboard
-- 🔄 Admin moderation panel
-- 🔄 Enhanced UI/UX
-- 🔄 Backend API modernization
+### ✅ Fully Implemented
+- ✅ **Multi-Seller Marketplace** - Independent sellers can register and post products
+- ✅ **Seller Portal** - Complete product management (Create, Read, Update, Delete)
+- ✅ **Admin Moderation Panel** - Approve/reject sellers and products with dashboard stats
+- ✅ **Role-Based Access Control** - Buyer, Seller, Admin roles with proper gating
+- ✅ **User Authentication** - Firebase Auth with role-based profiles
+- ✅ **Product Browsing** - Search, filter, and detailed product pages
+- ✅ **Shopping Cart** - Add/remove items with quantity management
+- ✅ **Razorpay Payments** - Secure payment processing with verification
+- ✅ **Order Tracking** - History with stats (total orders, total spent, last order date)
+- ✅ **User Profiles** - Account management with seller onboarding
+- ✅ **Firestore Security Rules** - Production-ready access control
+- ✅ **Responsive Design** - Mobile, tablet, and desktop optimized
+- ✅ **Dark/Light Theme** - Full theme toggle support
+- ✅ **Currency Formatting** - Indian Rupee (₹) with proper locale formatting
 
 ## 🛠️ Tech Stack
 
@@ -98,16 +98,58 @@ npm run setup           # Fresh install all dependencies
 
 ## 🔧 Configuration
 
+### Firebase Setup
+
+1. Create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com)
+2. Create a Firestore database (development mode for testing)
+3. Copy your Firebase config to environment variables
+
 ### Environment Variables
 
-Backend configuration in `server/.env`:
+**Frontend** - Create `.env.local`:
+```
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+**Backend** - Create `server/.env`:
 ```
 PORT=5000
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
-MONGODB_URI=your_connection_string
-JWT_SECRET=your_secret_key
+
+# Payment Gateway
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 ```
+
+See `server/.env.example` for all available options.
+
+### Firestore Security Rules
+
+Deploy the Firestore rules from `firestore.rules` to your Firebase project:
+
+1. Go to Firebase Console → Firestore Database → Rules
+2. Copy contents of `firestore.rules` into the editor
+3. Click "Publish"
+
+These rules implement:
+- Role-based access control (RBAC)
+- Seller-owned product enforcement
+- Admin moderation authority
+- Public marketplace read access
+- User privacy protection
+
+### Razorpay Setup
+
+1. Sign up at [https://razorpay.com](https://razorpay.com)
+2. Get your Key ID and Key Secret from dashboard
+3. Add them to `server/.env`
+4. Update frontend with your Razorpay key in `src/pages/Checkout.jsx`
 
 ### Frontend API Communication
 
@@ -115,10 +157,10 @@ Frontend automatically proxies API requests to the backend via Vite's proxy conf
 
 ```javascript
 // Frontend
-const response = await fetch('/api/products');
+const response = await fetch('/api/create-order');
 
 // Gets forwarded to
-// http://localhost:5000/api/products
+// http://localhost:5000/api/create-order
 ```
 
 ## 🚢 Deployment

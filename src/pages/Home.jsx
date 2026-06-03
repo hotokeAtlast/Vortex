@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../config/firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,6 +14,7 @@ export default function Home() {
       try {
         const q = query(
           collection(db, "products"),
+          where('approved', '==', true),
           orderBy("price", "desc")
         );
 
