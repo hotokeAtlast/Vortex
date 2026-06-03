@@ -240,7 +240,7 @@ export default function Checkout() {
                   <FontAwesomeIcon icon={faCircleNotch} spin /> Securing Connection...
                 </>
               ) : (
-                `Pay ${orderTotal.toLocaleString()} INR via Razorpay`
+                `Pay ₹${Math.round(orderTotal).toLocaleString('en-IN')} via Razorpay`
               )}
             </button>
           </form>
@@ -268,7 +268,7 @@ export default function Checkout() {
             </div>
             <div className="border-t border-gray-200 dark:border-gray-800 pt-4 flex justify-between items-center">
                <span className="text-gray-900 dark:text-gray-200 font-bold">Total</span>
-               <span className="text-xl font-extrabold text-amber-500">{orderTotal.toLocaleString()} INR</span>
+               <span className="text-xl font-extrabold text-amber-600 dark:text-amber-500">₹{Math.round(orderTotal).toLocaleString('en-IN')}</span>
             </div>
           </div>
         </div>

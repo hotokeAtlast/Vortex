@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { 
   signInWithPopup, 
   signInWithRedirect, 
@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword ,
   updateProfile
 } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faLock, faCircleNotch,faUser } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +20,7 @@ export default function Auth() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [accountType, setAccountType] = useState('buyer');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Starts true to catch mobile redirects
   
@@ -84,8 +86,18 @@ export default function Auth() {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const chosenName = name || `User${Math.floor(Math.random() * 1000)}`;
         await updateProfile(userCredential.user, {
-          displayName: name || `User${Math.floor(Math.random() * 1000)}` // Fallback to a random username if none provided
+          displayName: chosenName,
+        });
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          uid: userCredential.user.uid,
+          displayName: chosenName,
+          email,
+          role: accountType,
+          sellerStatus: accountType === 'seller' ? 'pending' : 'active',
+          createdAt: serverTimestamp(),
+          createdVia: 'email',
         });
       }
       navigate('/');
@@ -126,19 +138,57 @@ export default function Auth() {
           <form onSubmit={handleEmailAuth} className="space-y-5">
             {/* Only show Name field if they are signing up */}
 {!isLogin && (
-  <div className="relative group">
-    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">
-      <FontAwesomeIcon icon={faUser} />
+  <>
+    <div className="relative group">
+      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">
+        <FontAwesomeIcon icon={faUser} />
+      </div>
+      <input
+        type="text"
+        required
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-full bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+        placeholder="Display Name"
+      />
     </div>
-    <input
-      type="text"
-      required
-      value={name}
-      onChange={(e) => setName(e.target.value)}
-      className="w-full bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
-      placeholder="Display Name"
-    />
-  </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+      <label className="flex items-center gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 p-3 cursor-pointer hover:border-amber-400 transition-colors">
+        <input
+          type="radio"
+          name="accountType"
+          value="buyer"
+          checked={accountType === 'buyer'}
+          onChange={() => setAccountType('buyer')}
+          className="h-4 w-4 text-amber-500 focus:ring-amber-400"
+        />
+        <div>
+          <span className="font-semibold text-gray-900 dark:text-white">Buyer account</span>
+          <p className="text-gray-500 dark:text-gray-400">Browse products and manage orders.</p>
+        </div>
+      </label>
+      <label className="flex items-center gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 p-3 cursor-pointer hover:border-amber-400 transition-colors">
+        <input
+          type="radio"
+          name="accountType"
+          value="seller"
+          checked={accountType === 'seller'}
+          onChange={() => setAccountType('seller')}
+          className="h-4 w-4 text-amber-500 focus:ring-amber-400"
+        />
+        <div>
+          <span className="font-semibold text-gray-900 dark:text-white">Seller account</span>
+          <p className="text-gray-500 dark:text-gray-400">Create products and manage your seller portal.</p>
+        </div>
+      </label>
+    </div>
+    {accountType === 'seller' && (
+      <div className="rounded-3xl border border-amber-200 bg-amber-50 dark:border-amber-500/20 dark:bg-amber-950/30 p-4 text-sm text-amber-700 dark:text-amber-100">
+        Seller accounts require admin approval before your listings appear in the marketplace.
+      </div>
+    )}
+  </>
 )}
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">

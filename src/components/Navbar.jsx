@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { db } from "../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -29,7 +29,11 @@ function SearchBar() {
   // Fetch all products for the search index
   useEffect(() => {
     const fetchProducts = async () => {
-      const querySnapshot = await getDocs(collection(db, "products"));
+      const approvedProductsQuery = query(
+        collection(db, "products"),
+        where('approved', '==', true)
+      );
+      const querySnapshot = await getDocs(approvedProductsQuery);
       const productsList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -148,7 +152,7 @@ function SearchBar() {
 
 export default function Navbar({ toggleTheme, theme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
+  const { currentUser, userProfile, logout } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
 
@@ -250,6 +254,19 @@ export default function Navbar({ toggleTheme, theme }) {
                     Orders
                     <span className="flex items-center gap-2">
                       <FontAwesomeIcon icon={faBox} className="text-gray-400" />
+                    </span>
+                  </Link>
+                )}
+
+                {currentUser && userProfile?.role === 'seller' && (
+                  <Link
+                    to="/seller"
+                    onClick={closeMenu}
+                    className="px-5 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex justify-between items-center transition-colors"
+                  >
+                    Seller Portal
+                    <span className="flex items-center gap-2">
+                      <FontAwesomeIcon icon={faBox} className="text-amber-500" />
                     </span>
                   </Link>
                 )}
