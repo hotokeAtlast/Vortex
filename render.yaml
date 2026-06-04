@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: vortex-backend
+    runtime: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        fromDatabase:
+          name: frontend_url
+          property: url
+      - key: RAZORPAY_KEY_ID
+        fromDatabase:
+          name: razorpay_key_id
+          property: key
+      - key: RAZORPAY_KEY_SECRET
+        fromDatabase:
+          name: razorpay_key_secret
+          property: secret
+    healthCheckPath: /api/health
+    healthCheckInterval: 30
+    preDeployCommand: npm install
+
+crons:
+  - id: keep-server-awake
+    schedule: "*/10 * * * *"
+    httpMethod: GET
+    target:
+      type: web_service
+      name: vortex-backend
+    path: /api/health
