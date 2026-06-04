@@ -185,5 +185,3 @@ Feel free to submit issues and pull requests.
 This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
-
-Made with ❤️ for the GitHub Finish-Up-A-Thon Challenge 🚀
