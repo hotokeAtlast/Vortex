@@ -22,14 +22,4 @@ services:
           name: razorpay_key_secret
           property: secret
     healthCheckPath: /api/health
-    healthCheckInterval: 30
     preDeployCommand: npm install
-
-crons:
-  - id: keep-server-awake
-    schedule: "*/10 * * * *"
-    httpMethod: GET
-    target:
-      type: web_service
-      name: vortex-backend
-    path: /api/health
