@@ -1,25 +1,22 @@
 services:
   - type: web
-    name: vortex-backend
+    name: vortex
     runtime: node
-    buildCommand: cd server && npm install
-    startCommand: cd server && npm start
+    region: singapore        # closest free region for India
+    plan: free
+    buildCommand: npm install && cd server && npm install
+    startCommand: npm start && npm run dev
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
       - key: FRONTEND_URL
-        fromDatabase:
-          name: frontend_url
-          property: url
+        sync: false
       - key: RAZORPAY_KEY_ID
-        fromDatabase:
-          name: razorpay_key_id
-          property: key
+        sync: false
       - key: RAZORPAY_KEY_SECRET
-        fromDatabase:
-          name: razorpay_key_secret
-          property: secret
-    healthCheckPath: /api/health
-    preDeployCommand: npm install
+        sync: false
+      
