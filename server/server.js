@@ -66,4 +66,7 @@ app.post('/api/verify-payment', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Vortex backend active on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Vortex backend active on port ${PORT}`);
+  console.log(`Listening on 0.0.0.0:${PORT}`);
+});
