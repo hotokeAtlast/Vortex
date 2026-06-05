@@ -1,20 +1,20 @@
 {
   "name": "vortex-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Vortex Express backend (API + static frontend)",
+  "main": "server.cjs",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.cjs",
+    "dev": "nodemon server.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^7.2.0",
-    "@fortawesome/free-solid-svg-icons": "^7.2.0",
-    "@fortawesome/react-fontawesome": "^3.3.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

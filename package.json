@@ -9,9 +9,13 @@
     "dev:server": "cd server && npm run dev",
     "build": "vite build",
     "build:server": "cd server && echo \"No build needed for backend\"",
+    "start": "node server/server.cjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "setup": "npm install && cd server && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",

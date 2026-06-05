@@ -7,6 +7,9 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShieldAlt, faCircleNotch, faCheckCircle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+const apiUrl = (path) => `${API_BASE}${path}`;
+
 export default function Checkout() {
   const [error, setError] = useState('');
   const { cart, clearCart } = useCart();
@@ -77,7 +80,7 @@ export default function Checkout() {
     }
 
     try {
-        const data = await fetch("https://vortex-api-6wk1.onrender.com/api/create-order", {
+        const data = await fetch(apiUrl("/api/create-order"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ amount: orderTotal }),
@@ -94,7 +97,7 @@ export default function Checkout() {
                 try {
                     setIsProcessing(true); 
 
-                    const verifyRes = await fetch("https://vortex-api-6wk1.onrender.com/api/verify-payment", {
+                    const verifyRes = await fetch(apiUrl("/api/verify-payment"), {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
