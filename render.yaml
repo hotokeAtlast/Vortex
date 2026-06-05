@@ -4,13 +4,15 @@ services:
     runtime: node
     region: singapore
     plan: free
-    buildCommand: npm install && npm run build && cd server && npm install
+    buildCommand: npm install --include=dev && npm run build && cd server && npm install
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: PORT
         value: 10000
       - key: FRONTEND_URL
@@ -19,3 +21,4 @@ services:
         sync: false
       - key: RAZORPAY_KEY_SECRET
         sync: false
+
