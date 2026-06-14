@@ -27,3 +27,4 @@ dist-ssr
 .env.*.local
 REPORT.md
 firestore.rules
+DEV_TO_SUBMISSION.md
