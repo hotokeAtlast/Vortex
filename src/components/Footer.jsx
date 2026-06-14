@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand & Description */}
           <div className="lg:col-span-2">
             <Link to="/" className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white flex items-center gap-2 mb-4 w-max">
-              <img src="/public/favicon.svg" alt="Vortex Logo" className="w-8 h-8 animate-[spin_10s_linear_infinite]" />
+              <img src="./favicon.svg" alt="Vortex Logo" className="w-8 h-8 animate-[spin_10s_linear_infinite]" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-700">
                 Vortex
               </span>
